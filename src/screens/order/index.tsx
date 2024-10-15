@@ -4,11 +4,11 @@ import { useFocusEffect } from '@react-navigation/native';
 import React,{ useState } from "react";
 import { api } from "../../services/api";
 
-import { faArrowLeft, faPlus, faPen, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { StyleSheet } from "react-native";
 
-import { TouchableOpacity, Alert, View } from "react-native";
+import { View } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 
 import { Header } from "../../components/header";
@@ -51,7 +51,7 @@ export function Order(props: Props){
     const [menu, setMenu] = useState(false);
     
     const [status, setStatus] = useState('');
-    const [items, setItems] = useState([{"id": 1, "item_id": 2, "item_price": 80, "item_promotion": 12, "name": "Caixa de som", "order_id": 1, "quantity": 2, "total": 140.8}, {"id": 3, "item_id": 4, "item_price": 50, "item_promotion": "", "name": "Caixa de som", "order_id": 1, "quantity": 1, "total": 50}]);
+    const [items, setItems] = useState([]);
     const [order, setOrder] = useState();
 
     const { itemId } = props.route.params;
@@ -119,6 +119,11 @@ export function Order(props: Props){
         <View>
         <S.OrderTitle>Usuário: </S.OrderTitle>
          <S.OrderInfo> { order.user ? order.user.name : 'Não cadastrado'}</S.OrderInfo>
+        </View>
+
+        <View>
+        <S.OrderTitle>Email: </S.OrderTitle>
+         <S.OrderInfo> { order.user ? order.user.email : 'Não cadastrado'}</S.OrderInfo>
         </View>
 
         <View>
