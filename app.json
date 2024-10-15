@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "MHMobalStore",
-    "slug": "MHMobalStore",
+    "name": "MHStore",
+    "slug": "MHStore",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -9,7 +9,7 @@
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#f0f7fb"
     },
     "ios": {
       "supportsTablet": true
@@ -17,11 +17,17 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      }
+        "backgroundColor": "#f0f7fb"
+      },
+      "package": "com.toddynh0br.MHStore"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "e69ed97f-3220-42c9-ab7d-e5c23e218eca"
+      }
     }
   }
 }
