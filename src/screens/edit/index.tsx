@@ -61,8 +61,9 @@ export function Edit(props: Props){
     const [menu, setMenu] = useState(false);
     const id = props.route.params.itemId;
 
+    const [item, setItem] = useState('');
     const [name, setName] = useState('');
-    const [high, setHigh] = useState('');
+    const [high, setHigh] = useState();
     const [price, setPrice] = useState(0);
     const [status, setStatus] = useState();
     const [category, setCategory] = useState('');
@@ -71,21 +72,25 @@ export function Edit(props: Props){
     const [variations, setVariation] = useState([]);
     const [categories, setCategories] = useState([]);
 
+    const [deleted1, setDeleted1] = useState('');
     const [newImg1, setNew1] = useState(null);
     const [name1, setName1] = useState('');
 
+    const [deleted2, setDeleted2] = useState('');
     const [newImg2, setNew2] = useState(null);
     const [name2, setName2] = useState('');
 
+    const [deleted3, setDeleted3] = useState('');
     const [newImg3, setNew3] = useState(null);
     const [name3, setName3] = useState('');
 
+    const [deleted4, setDeleted4] = useState('');
     const [newImg4, setNew4] = useState(null);
     const [name4, setName4] = useState('');
 
+    const [deleted5, setDeleted5] = useState('');
     const [newImg5, setNew5] = useState(null);
     const [name5, setName5] = useState('');
-
 
     const [newVariation, setNewVariation] = useState('');
     
@@ -93,7 +98,7 @@ export function Edit(props: Props){
         return imagePath.slice(21)
     };
 
-    async function pickImage(setImage: any, setName: any, useCamera = false) {
+    async function pickImage(setImage: any, setName: any, setDeleted: any, useCamera = false) {
         let permissionResult;
         if (useCamera) {
             permissionResult = await ImagePicker.requestCameraPermissionsAsync();
@@ -125,6 +130,7 @@ export function Edit(props: Props){
         if (!result.canceled) {
             setImage(result.assets[0].uri);
             setName(result.assets[0].fileName);
+            setDeleted(false)
         }
     };
       
@@ -184,9 +190,9 @@ export function Edit(props: Props){
     let RealHigh
 
     if (high == 2){
-        RealHigh == 0
+        RealHigh = 0
     }else{
-        RealHigh == 1
+        RealHigh = 1
     }
 
     if (status == 2){
@@ -196,12 +202,18 @@ export function Edit(props: Props){
     }
 
     formData.append('name', name);
-    formData.append('high', RealHigh);
     formData.append('price', price);
+    formData.append('high', RealHigh);
     formData.append('status', RealStatus);
     formData.append('category', category);
     formData.append('promotion', promotion == 0 ? '' : promotion);
     formData.append('variation', JSON.stringify(variations));
+
+    if (deleted1)formData.append('deleted1', deleted1);
+    if (deleted2)formData.append('deleted2', deleted2);
+    if (deleted3)formData.append('deleted3', deleted3);
+    if (deleted4)formData.append('deleted4', deleted4);
+    if (deleted5)formData.append('deleted5', deleted5);
  
       setLoading(true)
       try {
@@ -258,6 +270,7 @@ export function Edit(props: Props){
           const response = await api.get(`/items/${id}`);
     
           const item = response.data.item;
+          setItem(item);
           setName(item.name);
           setHigh(item.high == 0 ? 2 : 1);
           setPrice(item.price);
@@ -293,7 +306,7 @@ export function Edit(props: Props){
      }, [])
     );
 
-    if (!name) {
+    if (!item) {
         return (     
          <S.Container>
           <Header openMenu={() => setMenu(true)}  navigation={props.navigation}/>
@@ -324,28 +337,37 @@ export function Edit(props: Props){
          <Button
           disabled={false}
           title={name1 ? name1 : 'Adicionar imagem 1'}
-          onPress={() => pickImage(setNew1, setName1)}
+          onPress={() => pickImage(setNew1, setName1, setDeleted1)}
          />
          
-        <S.ImageInput onPress={() => pickImage(setNew1, setName1, true)}>
-         <FontAwesomeIcon icon={faCamera}  size={20} color="#f0f7fb"/>
-        </S.ImageInput>
+         { name1 ? 
+          <S.ImageInput onPress={() => {setName1(''); setNew1(null); setDeleted1(true)}}>
+           <FontAwesomeIcon icon={faXmark}  size={20} color="#f0f7fb"/>
+          </S.ImageInput>
+         :
+          <S.ImageInput onPress={() => pickImage(setNew1, setName1, setDeleted1, true)}>
+           <FontAwesomeIcon icon={faCamera}  size={20} color="#f0f7fb"/>
+          </S.ImageInput>
+         }
     
-       
-
         </S.ImageWrapper>
 
         <S.ImageWrapper>
          <Button
           disabled={false}
           title={name2 ? name2 : 'Adicionar imagem 2'}
-          onPress={() => pickImage(setNew2, setName2)}
+          onPress={() => pickImage(setNew2, setName2, setDeleted2)}
          />
 
-  
-          <S.ImageInput onPress={() => pickImage(setNew2, setName2, true)}>
+         { name2 ? 
+          <S.ImageInput onPress={() => {setName2(''); setNew2(null); setDeleted2(true)}}>
+           <FontAwesomeIcon icon={faXmark}  size={20} color="#f0f7fb"/>
+          </S.ImageInput>
+         :
+          <S.ImageInput onPress={() => pickImage(setNew2, setName2, setDeleted2, true)}>
            <FontAwesomeIcon icon={faCamera}  size={20} color="#f0f7fb"/>
           </S.ImageInput>
+         }
          
        
          
@@ -355,13 +377,19 @@ export function Edit(props: Props){
          <Button
           disabled={false}
           title={name3 ? name3 : 'Adicionar imagem 3'}
-          onPress={() => pickImage(setNew3, setName3)}
+          onPress={() => pickImage(setNew3, setName3, setDeleted3)}
          />
         
 
-          <S.ImageInput onPress={() => pickImage(setNew3, setName3, true)}>
+        { name3 ? 
+          <S.ImageInput onPress={() => {setName3(''); setNew3(null); setDeleted3(true)}}>
+           <FontAwesomeIcon icon={faXmark}  size={20} color="#f0f7fb"/>
+          </S.ImageInput>
+         :
+          <S.ImageInput onPress={() => pickImage(setNew3, setName3, setDeleted3, true)}>
            <FontAwesomeIcon icon={faCamera}  size={20} color="#f0f7fb"/>
           </S.ImageInput>
+         }
          
        
          
@@ -371,13 +399,19 @@ export function Edit(props: Props){
          <Button
           disabled={false}
           title={name4 ? name4 : 'Adicionar imagem 4'}
-          onPress={() => pickImage(setNew4, setName4)}
+          onPress={() => pickImage(setNew4, setName4, setDeleted4)}
          />
         
  
-          <S.ImageInput onPress={() => pickImage(setNew4, setName4, true)}>
+        { name4 ? 
+          <S.ImageInput onPress={() => {setName4(''); setNew4(null); setDeleted4(true)}}>
+           <FontAwesomeIcon icon={faXmark}  size={20} color="#f0f7fb"/>
+          </S.ImageInput>
+         :
+          <S.ImageInput onPress={() => pickImage(setNew4, setName4, setDeleted4, true)}>
            <FontAwesomeIcon icon={faCamera}  size={20} color="#f0f7fb"/>
           </S.ImageInput>
+         }
        
         </S.ImageWrapper>
 
@@ -385,13 +419,18 @@ export function Edit(props: Props){
          <Button
           disabled={false}
           title={name5 ? name5 : 'Adicionar imagem 5'}
-          onPress={() => pickImage(setNew5, setName5)}
+          onPress={() => pickImage(setNew5, setName5, setDeleted5)}
          />
         
-
-          <S.ImageInput onPress={() => pickImage(setNew5, setName5, true)}>
+        { name5 ? 
+          <S.ImageInput onPress={() => {setName5(''); setNew5(null); setDeleted5(true)}}>
+           <FontAwesomeIcon icon={faXmark}  size={20} color="#f0f7fb"/>
+          </S.ImageInput>
+         :
+          <S.ImageInput onPress={() => pickImage(setNew5, setName5, setDeleted5, true)}>
            <FontAwesomeIcon icon={faCamera}  size={20} color="#f0f7fb"/>
           </S.ImageInput>
+         }
          
        
         </S.ImageWrapper>
